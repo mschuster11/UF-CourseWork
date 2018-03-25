@@ -1,0 +1,166 @@
+TMS320C2000 Assembler PC v16.9.6 Fri Feb 02 14:04:23 2018
+
+Tools Copyright (c) 1996-2017 Texas Instruments Incorporated
+../ex0.asm                                                           PAGE    1
+
+       1              ;****************************************************************************************
+       2              ; file = ex0.asm
+       3              ; Quick examples of Assembler directives & 28F335 DSP code
+       4              ; Dr. Karl Gugel, May/2009
+       5              ;
+       6              ; To be assembled using Code Composer Studio which requires a linker command 
+       7              ; file to tell CCR where to place code & data into DSP SRAM. 
+       8              ; The command file used = 28335_RAM_lnk.com
+       9              ; Important Code locations:
+      10              ;               .text   RAML1   (internal DSP memory) starting address = 09000 Hex, 4K Words
+      11              ;               .data   RAML2   (internal DSP memory) starting address = 0A000 Hex, 4K Words            
+      12              ;
+      13              ; Special Note:  
+      14              ;               Assembler directives are used to place data and variables into memory.  
+      15              ;               They are not F335 instructions and thus are not executed at "run-time".  
+      16              ;               When this program is loaded into memory, the data (created above by the 
+      17              ;               assembler) is also copied down into memory. This is called "load-time".
+      18              ;
+      19                              .global         _c_int00        ;This assembler directive allows _c_int00 to be a
+      20                                                                              ;global variable. This tells the linker where
+      21                                                                              ;program (.text code) begins and where to boo
+      22              ;                                                               
+      23              ; Additional References:
+      24              ;                                               Assembler Directives: spru513c.pdf
+      25              ;                                               Memory Map/Hardware Related: sprs439e.pdf (also called 320f28
+      26              ;                                               CPU Registers & Assembly Code: spru430.pdf (version E)  
+      27              ;****************************************************************************************
+      28              
+      29              ;***************************** Program Constants ****************************************
+      30              ; Creating constants using the .set assembler directive. This should be at the top of your
+      31              ; program.  This is like a define statement in C.
+      32        0000  num1            .set            0h                              ;assembly-time constant (hex number) 
+      33        00F0  num2            .set            11110000b               ;assembly-time constant (binary no.)
+      34        FFFF  num3            .set            65535                   ;assembly-time constant (decimal no.)
+      35        0003  count           .set            3                               ;number of characters to add in EEL4744 ('E'+
+      36        A000  data_sect       .set            0xa000                  ;constant that is actually the starting addr of .data
+      37        B000  bss_sect        .set            0xb000                  ;constant that is actually the starting addr of .bss 
+      38              ;****************************************************************************************
+      39              
+      40              ;******************* DATA ALLOCATION SECTION - Variables/Data ***************************
+      41              ; Data can go before or after your program code but should not be placed in the middle
+      42              ; nof a program for clarity reasons.
+      43 00000000                       .data                           ;data section, see the command linker file, this puts the 
+      44                                                                      ;following data defined below in a block of internal 
+      45                                                                      ;starting at 0xA000. 
+      46 00000000 0000  counter .word           0h      ;define word, two bytes placed in memory stating in the data section     
+      47 00000001 1234  num4    .word           01234h  ;define word, two bytes placed in memory
+      48 00000002 0045  char    .byte           'E'     ;define string, ASCII characters placed in memory as WORDS!
+      49 00000003 0045          .byte           'E'
+      50 00000004 004C          .byte           'L'
+      51 00000005 0034          .byte           '4'
+      52 00000006 0037          .byte           '7'
+      53 00000007 0034          .byte           '4'
+      54 00000008 0034          .byte           '4'
+      55 00000009 0030          .byte           "0123"  ;here is another way to specify a string of WORDS!
+TMS320C2000 Assembler PC v16.9.6 Fri Feb 02 14:04:23 2018
+
+Tools Copyright (c) 1996-2017 Texas Instruments Incorporated
+../ex0.asm                                                           PAGE    2
+
+         0000000a 0031 
+         0000000b 0032 
+         0000000c 0033 
+      56 0000000d FAB4              .word               0xfab4  ;another way to specify a hex number (WORD)
+      57 0000000e 0020  val1    .word           32              ;places 32 decimal (20 hex) in memory (WORD) at label val1 at load-ti
+      58 0000000f 0200  val2    .word           512             ;places 512 decimal(200 hex) in memory (WORD) at label val2 at load-t
+      59 00000010 5678  val3    .long           0x12345678      ;places two words in memory (lower word/lower addr, big endian) 
+         00000011 1234 
+      60                                      
+      61                                                              ;.BSS SECTION is used to reserve space in SRAM for run-time r
+      62                                                              ; See the command linker file, the starting address is 0xB000
+      63 00000000                   .bss                results,3       ;reserves three words at label 'results' in the .bss section 
+      64 00000003                   .bss                sum,1           ;reserves one word at label 'sum' in the .bss section
+      65                          
+      66                                                                              ;.global directive lets you to see the assign
+      67                              .global         num1,num2,num3,num3,num4,counter,char,val1,val2,val3,results,sum 
+      68              ;****************************************************************************************
+      69              
+      70              ;******************** Brief Introduction to CPU Model ***********************************
+      71              ; CPU Registers: 
+      72              ;       ACC             Accumulator (32 bits) comprised of AH (upper 16 bits) and AL (lower 16 bits)
+      73              ;       XAR0    Auxiliary Register0 (32 bits) comprised of AR0H (upper 16 bits) and AR0 (lower 16 bits) 
+      74              ;       XAR1    Auxiliary Register1 (32 bits) comprised of AR1H (upper 16 bits) and AR1 (lower 16 bits) 
+      75              ;       XAR2    Auxiliary Register2 (32 bits) comprised of AR2H (upper 16 bits) and AR2 (lower 16 bits) 
+      76              ;       XAR3    Auxiliary Register3 (32 bits) comprised of AR3H (upper 16 bits) and AR3 (lower 16 bits) 
+      77              ;       XAR4    Auxiliary Register4 (32 bits) comprised of AR4H (upper 16 bits) and AR4 (lower 16 bits) 
+      78              ;       XAR5    Auxiliary Register5 (32 bits) comprised of AR5H (upper 16 bits) and AR5 (lower 16 bits) 
+      79              ;       XAR6    Auxiliary Register6 (32 bits) comprised of AR6H (upper 16 bits) and AR6 (lower 16 bits) 
+      80              ;       XAR7    Auxiliary Register7 (32 bits) comprised of AR7H (upper 16 bits) and AR6 (lower 16 bits)      
+      81              ;       XT              Multiplicand Register (32 bits) comprised of T (upper 16 bits) and TL (lower 16 bits)
+      82              ;       P               Product Register (32 bits) comprised PH (upper 16 bits) and PL (lower 16 bits)
+      83              ;       PC              Program Counter (22 bits) 
+      84              ;       SP              Stack Pointer (16 bits) 
+      85              ;       DP              Data Page Register (16 bits) 
+      86              ;       ST1,ST0 Status Registers (flags)
+      87              
+      88              
+      89              
+      90              ;****************************************************************************************
+      91              
+      92              ;****************** F335 Program Examples ***********************
+      93 00000000                       .text                   ;Program section, see the command linker file, program code 
+      94                                                              ;should be placed in the text section which starts at 0x9000
+      95                                                              
+      96 00000000       _c_int00:                               ;This label tells the linker where the entry (starting) point for 
+      97                                                              ;the first instruction in your program. 
+      98              
+      99                                                                                      ;Short example1 to sum 1st three char
+     100                                                                                      ;This illustrates immediate, indirect
+     101 00000000 28A0"                 MOV             AR0,#char                       ;address of 1st char in EEL4744              
+         00000001 0002 
+     102 00000002 28A1-                 MOV             AR1,#sum                        ;address of where final sum (result)will be s
+         00000003 0003 
+     103 00000004 28A2"                 MOV             AR2,#counter            ;address of counter saved in memory
+         00000005 0000 
+TMS320C2000 Assembler PC v16.9.6 Fri Feb 02 14:04:23 2018
+
+Tools Copyright (c) 1996-2017 Texas Instruments Incorporated
+../ex0.asm                                                           PAGE    3
+
+     104 00000006 9B03                  MOV             AH,#count                       ;load the count value & save in memory counte
+     105 00000007 97C2                  MOV             *AR2,AH                         
+     106 00000008 9A00                  MOV             AL,#0                           ;clear initial sum
+     107 00000009 94C0  TOP1    ADD             AL,*AR0                         ;add char value to sum
+     108 0000000a 0AA0                  INC             AR0                                     ;increment pointer used to get a char
+     109 0000000b 0BC2                  DEC             *AR2                            ;decrement counter in memory
+     110 0000000c 60FD                  B               TOP1,NEQ                        ;if the Z flag is 0, branch up and repeat add
+     111 0000000d 96C1                  MOV             *ar1,AL
+     112 0000000e 7700                  NOP                                                     ;No operation to view sum in memory a
+     113 0000000f 7700                  NOP                                                     ;put some instructions (space) inbetw
+     114                                                                                      ;for stepping through with the debugg
+     115              ;
+     116                                                                                      ;Short example2 to illustrate direct 
+     117                                                                                      ;mathematical & shift operations.
+     118 00000010 FA80                  MOV             DP,#data_sect>>6        ;set datapage pointer to point to .data section
+     119 00000011 2D0E"                 MOV             T,@val1                         ;load T using direct addressing mode
+     120 00000012 360F"                 MPYU    ACC,T,@val2                     ;val1[] * val2[] => ACC, 16 bit unsigned multiply
+     121              
+     122 00000013 FAC0                  MOV             DP,#bss_sect>>6         ;set datapage pointer to point to .bss section  
+     123 00000014 9600-                 MOV             @results,AL                     ;save lower word only, which assumes answers 
+     124              
+     125 00000015 FA80                  MOV             DP,#data_sect>>6        ;set datapage pointer back to .data section
+     126 00000016 920E"                 MOV             AL,@val1                        ;add val1[] + val2[]
+     127 00000017 940F"                 ADD             AL,@val2
+     128 00000018 FAC0                  MOV             DP,#bss_sect>>6         ;set datapage pointer to point to .bss section  
+     129 00000019 9601-                 MOV             @results+1,AL           ;save val1[] + val2[]           
+     130              
+     131                                                                                      ;Shift left example
+     132 0000001a 28A8                  MOV             AH,#num3                        ;set AH to a predetermined value to see if th
+         0000001b FFFF 
+     133                                                                                      ;next instruction affects AH
+     134 0000001c FF84                  LSL             AL,#5                           ;logical shift left AL by 5 places
+     135 0000001d 9602-                 MOV             @results+2,AL
+     136              
+     137 0000001e 7700                  NOP     
+     138 0000001f 7700                  NOP                                             
+     139 00000020 6F00  END1    B               END1,UNC                        ;infinite loop to just keep us from trying to execute
+     140                                                                                      ;un-initialized (no program) memory. 
+     141              
+
+No Assembly Errors, No Assembly Warnings

@@ -1,0 +1,38 @@
+
+**** Build of configuration Debug for project EEL3932_Mod6_part1 ****
+
+"C:\\ti\\ccsv7\\utils\\bin\\gmake" -k -j 4 all -O 
+ 
+'Building file: "../main.c"'
+'Invoking: MSP430 Compiler'
+"C:/ti/ccsv7/tools/compiler/ti-cgt-msp430_17.9.0.STS/bin/cl430" -vmsp -Ooff --use_hw_mpy=none --include_path="C:/ti/ccsv7/ccs_base/msp430/include" --include_path="C:/Users/Mark/OneDrive/School-Master/EEL3923C/Module 6 - Micro-Controller Applications/Part1_project" --include_path="C:/ti/ccsv7/tools/compiler/ti-cgt-msp430_17.9.0.STS/include" --advice:power=all --define=__MSP430F2274__ -g --c99 --printf_support=minimal --diag_warning=225 --diag_wrap=off --display_error_number --silicon_errata=CPU19 --preproc_with_compile --preproc_dependency="main.d_raw"  "../main.c"
+"../main.c", line 15: remark #1540-D: (ULP 11.2) Assignment of higher bits (constants) to "P2OUT" within a loop. Recommend using lower 4 bits to allow use of constant generators
+"../main.c", line 19: remark #1540-D: (ULP 11.2) Assignment of higher bits (constants) to "P2OUT" within a loop. Recommend using lower 4 bits to allow use of constant generators
+"../main.c", line 16: remark #1527-D: (ULP 2.1) Detected SW delay loop using empty loop. Recommend using a timer module instead
+"../main.c", line 20: remark #1527-D: (ULP 2.1) Detected SW delay loop using empty loop. Recommend using a timer module instead
+"../main.c", line 15: remark #1540-D: (ULP 11.2) Assignment of higher bits (constants) to "P2OUT" within a loop. Recommend using lower 4 bits to allow use of constant generators
+"../main.c", line 19: remark #1540-D: (ULP 11.2) Assignment of higher bits (constants) to "P2OUT" within a loop. Recommend using lower 4 bits to allow use of constant generators
+"../main.c", line 16: remark #1527-D: (ULP 2.1) Detected SW delay loop using empty loop. Recommend using a timer module instead
+"../main.c", line 20: remark #1527-D: (ULP 2.1) Detected SW delay loop using empty loop. Recommend using a timer module instead
+"../main.c", line 16: remark #1527-D: (ULP 2.1) Detected SW delay loop using empty loop. Recommend using a timer module instead
+"../main.c", line 20: remark #1527-D: (ULP 2.1) Detected SW delay loop using empty loop. Recommend using a timer module instead
+"../main.c", line 16: remark #1527-D: (ULP 2.1) Detected SW delay loop using empty loop. Recommend using a timer module instead
+"../main.c", line 20: remark #1527-D: (ULP 2.1) Detected SW delay loop using empty loop. Recommend using a timer module instead
+"../main.c", line 16: remark #1527-D: (ULP 2.1) Detected SW delay loop using empty loop. Recommend using a timer module instead
+"../main.c", line 16: remark #1527-D: (ULP 2.1) Detected SW delay loop using empty loop. Recommend using a timer module instead
+"../main.c", line 20: remark #1527-D: (ULP 2.1) Detected SW delay loop using empty loop. Recommend using a timer module instead
+"../main.c", line 20: remark #1527-D: (ULP 2.1) Detected SW delay loop using empty loop. Recommend using a timer module instead
+'Finished building: "../main.c"'
+ 
+'Building target: "EEL3932_Mod6_part1.out"'
+'Invoking: MSP430 Linker'
+"C:/ti/ccsv7/tools/compiler/ti-cgt-msp430_17.9.0.STS/bin/cl430" -vmsp -Ooff --use_hw_mpy=none --advice:power=all --define=__MSP430F2274__ -g --c99 --printf_support=minimal --diag_warning=225 --diag_wrap=off --display_error_number --silicon_errata=CPU19 -z -m"EEL3932_Mod6_part1.map" --heap_size=80 --stack_size=80 -i"C:/ti/ccsv7/ccs_base/msp430/include" -i"C:/ti/ccsv7/tools/compiler/ti-cgt-msp430_17.9.0.STS/lib" -i"C:/ti/ccsv7/tools/compiler/ti-cgt-msp430_17.9.0.STS/include" --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="EEL3932_Mod6_part1_linkInfo.xml" --use_hw_mpy=none --rom_model -o "EEL3932_Mod6_part1.out" "./main.obj" "../lnk_msp430f2274.cmd"  -llibc.a 
+<Linking>
+remark #10371-D: (ULP 1.1) Detected no uses of low power mode state changing instructions
+remark #10372-D: (ULP 4.1) Detected uninitialized Port 1 in this project. Recommend initializing all unused ports to eliminate wasted current consumption on unused pins.
+remark #10372-D: (ULP 4.1) Detected uninitialized Port 3 in this project. Recommend initializing all unused ports to eliminate wasted current consumption on unused pins.
+remark #10372-D: (ULP 4.1) Detected uninitialized Port 4 in this project. Recommend initializing all unused ports to eliminate wasted current consumption on unused pins.
+'Finished building target: "EEL3932_Mod6_part1.out"'
+ 
+
+**** Build Finished ****

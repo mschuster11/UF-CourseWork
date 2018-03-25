@@ -1,0 +1,5 @@
+PROMPT_FOR_ADVISOR_REMARKS_ON_LAUNCH=always
+RELOAD_PROGRAM_IF_CHANGED=always
+eclipse.preferences.version=1
+symbolAutoCompleteHistory<seperator>org.eclipse.cdt.debug.ui.memory.memorybrowser.MemoryBrowser<seperator>Data<seperator>Texas\ Instruments\ XDS100v2\ USB\ Debug\ Probe\\C28xx=0x100000
+useAnnotationsPrefPage=true

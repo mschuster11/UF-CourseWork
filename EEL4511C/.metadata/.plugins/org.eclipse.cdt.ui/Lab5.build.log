@@ -1,0 +1,19 @@
+
+**** Build of configuration Debug for project Lab5 ****
+
+"C:\\ti\\ccsv7\\utils\\bin\\gmake" -k -j 4 all -O 
+ 
+'Building file: "../main.c"'
+'Invoking: C2000 Compiler'
+"C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_16.9.6.LTS/bin/cl2000" -v28 -ml -mt --float_support=fpu32 --include_path="C:/tidcs/c28/DSP2833x/v131/DSP2833x_common/include" --include_path="C:/Users/Mark/OneDrive/School-Master/EEL4511C/Labs/Lab5/AIC23_Lib" --include_path="C:/Users/Mark/OneDrive/School-Master/EEL4511C/Labs/Lab5/personalLib/headers" --include_path="C:/Users/Mark/OneDrive/School-Master/EEL4511C/Labs/Lab5" --include_path="C:/tidcs/c28/DSP2833x/v131/DSP2833x_headers/include" --include_path="C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_16.9.6.LTS/include" -g --c99 --diag_warning=225 --diag_wrap=off --display_error_number --preproc_with_compile --preproc_dependency="main.d_raw"  "../main.c"
+"../main.c", line 44: warning #112-D: statement is unreachable
+'Finished building: "../main.c"'
+ 
+'Building target: "Lab5.out"'
+'Invoking: C2000 Linker'
+"C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_16.9.6.LTS/bin/cl2000" -v28 -ml -mt --float_support=fpu32 -g --c99 --diag_warning=225 --diag_wrap=off --display_error_number -z -m"Lab5.map" --stack_size=0x300 --warn_sections -i"C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_16.9.6.LTS/lib" -i"C:/ti/ccsv7/tools/compiler/ti-cgt-c2000_16.9.6.LTS/include" --reread_libs --diag_wrap=off --display_error_number --xml_link_info="Lab5_linkInfo.xml" --rom_model -o "Lab5.out" "./main.obj" "./AIC23_Lib/AIC23.obj" "./AIC23_Lib/InitAIC23.obj" "./Common/DSP2833x_ADC_cal.obj" "./Common/DSP2833x_Adc.obj" "./Common/DSP2833x_CpuTimers.obj" "./Common/DSP2833x_DMA.obj" "./Common/DSP2833x_DefaultIsr.obj" "./Common/DSP2833x_I2C.obj" "./Common/DSP2833x_Mcbsp.obj" "./Common/DSP2833x_MemCopy.obj" "./Common/DSP2833x_PieCtrl.obj" "./Common/DSP2833x_PieVect.obj" "./Common/DSP2833x_Spi.obj" "./Common/DSP2833x_SysCtrl.obj" "./Common/DSP2833x_Xintf.obj" "./Common/DSP2833x_usDelay.obj" "./Headers/DSP2833x_GlobalVariableDefs.obj" "./personalLib/src/ADC_Utils.obj" "./personalLib/src/Codec_Utils.obj" "./personalLib/src/I2C_LCD_Utils.obj" "./personalLib/src/Interrupt_ISRs.obj" "./personalLib/src/Interrupt_Utils.obj" "./personalLib/src/LEDs_switches_Utils.obj" "./personalLib/src/OneToOneI2CDriver.obj" "./personalLib/src/Timer1_Utils.obj" "./personalLib/src/extSram.obj" "../28335_RAM_lnk.cmd" "../Headers/DSP2833x_Headers_nonBIOS.cmd"  -llibc.a 
+<Linking>
+'Finished building target: "Lab5.out"'
+ 
+
+**** Build Finished ****

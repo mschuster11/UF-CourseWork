@@ -1,0 +1,405 @@
+		.global		_c_int00
+		.ref		Quiz_Values			; Start address of the scores vector.
+		.ref		Quiz_Values_Length	; Address that holds of length the scores vector.
+		.ref		Min_Value			; Address that will hold the min value fo the scores vector.
+		.ref		Max_Value			; Address that will hold the min value fo the scores vector.
+
+WDCR			.set	0x7029
+stackAddr		.set	0x400
+minLocation		.set	0x9101
+
+GPAMUX1			.set	0x6F86
+GPADIR			.set	0x6F8A
+GPADAT			.set	0x6FC0
+GPAPUD			.set	0x6F8C
+
+GPBMUX1			.set	0x6F96
+GPBDIR			.set    0x6F9A
+GPBDAT			.set    0x6FC8
+GPBPUD			.set    0x6F9C
+
+		.data
+
+MAXString		.word	"MAX"
+				.word	0x00
+				.word	0x00
+MINString		.word	"MIN"
+				.word	0x00
+				.word	0x00
+
+
+
+		.text
+_c_int00:
+			EALLOW
+
+			MOV	 AL, #0x0068	;Disable Watchdog Timer in case we want to run this code on our board
+			MOV	 AR1, #WDCR
+			MOV	 *AR1, AL
+
+			MOV	SP, #stackAddr
+
+			B START, UNC
+
+			MOV AR0, #Quiz_Values
+			MOV AR1, #Quiz_Values_Length
+			MOV AR2, #Min_Value
+			MOV AH, #0xFFFF
+			MOV AL, #0xFFFF
+			MOVL XAR5, ACC
+			MOV AH, #0x0
+			MOV AL, #0x0
+			MOVL XAR6, ACC
+			MOVL ACC, *AR1
+			B ENDL2, EQ
+LOOP_CMP	DEC *AR1
+			MOVL ACC, *AR0
+			AND AH, #0x8000
+			MOV AR2, AH
+			MOVL ACC, XAR5
+			AND AH, #0x8000
+			MOV AL, AR2
+			CMP AL, AH
+
+			B NEWMIN, GT
+			B SAME_LARGE, UNC
+
+NEWMIN		MOVL XAR5, *AR0
+
+
+SAME_LARGE
+			MOVL ACC, *AR0
+			AND AH, #0x7FFF
+			MOVL XAR6, ACC
+			MOVL ACC, XAR5
+			AND AH, #0x7FFF
+			MOVL XAR6, ACC
+;			CMPL XAR5, XAR6
+
+			CMP ACC, @P
+			B SAMEMIN, GT
+			MOV *AR2, AL
+			MOV AH, AL
+SAMEMIN		INC AR0
+			MOV AL, *AR1
+ENDL2		B LOOP_CMP, NEQ
+
+
+VALMSBSET
+
+
+
+START		MOV AR0, #GPAMUX1
+			MOV AL, *AR0
+			AND AL, #0xF30F
+			MOV *AR0, AL
+
+			MOV AR0, #GPAPUD
+			MOV AL, *AR0
+			AND AL, #0xFF8B
+			MOV *AR0, #0
+			MOV *AR0, AL
+
+			MOV AR0, #GPADIR
+			MOV AL, *AR0
+			AND AL, #0xFF8B
+			MOV *AR0, AL
+
+			MOV AR0, #GPADAT
+			MOV AR1, #0x00
+LOOP			MOV AL, *AR0
+			MOV AH, AL
+
+			AND AH, #0x0070
+			AND AL, #0x0004
+			LSL AL, #1
+			OR AL, AH
+			LSR AL, #1
+			CMP AL, AH
+			B LOOP, EQ
+			MOV AH, AR1
+			AND AL, #0x08
+			B SEL_MAX, EQ
+
+			B SEL_MIN, NEQ
+
+SEL_MAX		LC LCD_CLEAR
+
+			PUSH #MAXString
+			LC LCD_WRITE_STRING
+			B LOOP, UNC
+
+SEL_MIN		LC LCD_CLEAR
+
+			PUSH #MINString
+			LC LCD_WRITE_STRING
+
+ENDL		B LOOP, UNC
+
+
+PREP_LCD:
+			PUSH AR0
+			PUSH AL
+			MOV AR0, #GPBMUX1
+			MOV AL, *AR0
+			AND AL, #0xFFF0
+			MOV *AR0, AL
+
+			MOV AR0, #GPBPUD
+			MOV AL, *AR0
+			AND AL, #0xFFFC
+			MOV *AR0, AL
+
+
+			POP AL
+			POP AR0
+			LRET
+
+SEND_LCD_COMMAND:
+			POP AR7
+			POP AR6
+
+			POP AR1
+			PUSH AR6
+			PUSH AR7
+			MOV AR0, #GPBDIR
+			MOV AL, AR1
+
+			TSET *AR0, #0
+			TSET *AR0, #1
+
+			TCLR *AR0, #1
+			TSET *AR0, #1
+
+			TCLR *AR0, #0
+			TCLR *AR0, #1
+			TSET *AR0, #1
+			TSET *AR0, #0
+
+			TCLR *AR0, #0
+			TCLR *AR0, #1
+			TSET *AR0, #1
+			TSET *AR0, #0
+
+			TCLR *AR0, #0
+			TCLR *AR0, #1
+			TSET *AR0, #1
+			TSET *AR0, #0
+
+			TCLR *AR0, #0
+			TCLR *AR0, #1
+			TSET *AR0, #1
+			TSET *AR0, #0
+
+			TCLR *AR0, #0
+			TCLR *AR0, #1
+			TSET *AR0, #1
+			TSET *AR0, #0
+
+			TCLR *AR0, #0
+			TCLR *AR0, #1
+			TSET *AR0, #1
+			TSET *AR0, #0
+
+			TCLR *AR0, #1
+			TSET *AR0, #1
+
+			TCLR *AR0, #1
+			TSET *AR0, #1
+
+			TCLR *AR0, #0
+			TSET *AR0, #0
+
+			MOV AH, #8
+BIT_LOOP:	PUSH AL
+			AND AL, #0x80
+			B ZERO, EQ
+			B ONE, UNC
+NEXT_BIT:	POP AL
+			LSL AL, #1
+			DEC AH
+			CMP AH, #0
+			B NEXT, EQ
+			B BIT_LOOP, UNC
+
+
+ZERO:		TCLR *AR0, #1
+			TSET *AR0, #1
+			B NEXT_BIT, UNC
+
+
+ONE:		TCLR *AR0, #0
+			TCLR *AR0, #1
+			TSET *AR0, #1
+			TSET *AR0, #0
+			B NEXT_BIT, UNC
+
+
+NEXT:		TCLR *AR0, #0
+			TCLR *AR0, #1
+			TSET *AR0, #1
+			TSET *AR0, #0
+
+			TCLR *AR0, #1
+			TCLR *AR0, #0
+
+
+
+			LRET
+
+
+INIT_LCD:
+			PUSH #0x30
+			LC SEND_LCD_COMMAND
+			PUSH #0x34
+			LC SEND_LCD_COMMAND
+			PUSH #0x30
+			LC SEND_LCD_COMMAND
+
+			PUSH #0x30
+			LC SEND_LCD_COMMAND
+			PUSH #0x34
+			LC SEND_LCD_COMMAND
+			PUSH #0x30
+			LC SEND_LCD_COMMAND
+
+			PUSH #0x30
+			LC SEND_LCD_COMMAND
+			PUSH #0x34
+			LC SEND_LCD_COMMAND
+			PUSH #0x30
+			LC SEND_LCD_COMMAND
+
+			PUSH #0x20
+			LC SEND_LCD_COMMAND
+			PUSH #0x24
+			LC SEND_LCD_COMMAND
+			PUSH #0x20
+			LC SEND_LCD_COMMAND
+
+			PUSH #0x20
+			LC SEND_LCD_COMMAND
+			PUSH #0x24
+			LC SEND_LCD_COMMAND
+			PUSH #0x20
+			LC SEND_LCD_COMMAND
+
+			PUSH #0x80
+			LC SEND_LCD_COMMAND
+			PUSH #0x84
+			LC SEND_LCD_COMMAND
+			PUSH #0x80
+			LC SEND_LCD_COMMAND
+
+			PUSH #0x00
+			LC SEND_LCD_COMMAND
+			PUSH #0x04
+			LC SEND_LCD_COMMAND
+			PUSH #0x00
+			LC SEND_LCD_COMMAND
+
+			PUSH #0xF0
+			LC SEND_LCD_COMMAND
+			PUSH #0xF4
+			LC SEND_LCD_COMMAND
+			PUSH #0xF0
+			LC SEND_LCD_COMMAND
+
+			PUSH #0x00
+			LC SEND_LCD_COMMAND
+			PUSH #0x04
+			LC SEND_LCD_COMMAND
+			PUSH #0x00
+			LC SEND_LCD_COMMAND
+
+			PUSH #0xF0
+			LC SEND_LCD_COMMAND
+			PUSH #0xF4
+			LC SEND_LCD_COMMAND
+			PUSH #0xF8
+			LC SEND_LCD_COMMAND
+
+			PUSH #0x00
+			LC SEND_LCD_COMMAND
+			PUSH #0x04
+			LC SEND_LCD_COMMAND
+			PUSH #0x00
+			LC SEND_LCD_COMMAND
+
+			PUSH #0x10
+			LC SEND_LCD_COMMAND
+			PUSH #0x14
+			LC SEND_LCD_COMMAND
+			PUSH #0x18
+			LC SEND_LCD_COMMAND
+
+			LRET
+
+LCD_WRITE_CHAR:
+
+			POP AR2
+			POP AR3
+			POP AL
+			PUSH AR3
+			PUSH AR2
+			MOV AH, AL
+			PUSH AH
+			AND AL, #0xF0
+			OR AL, #0x0D
+			PUSH AL
+			LC SEND_LCD_COMMAND
+			AND AL, #0xF0
+			OR AL, #0x09
+			PUSH AL
+			LC SEND_LCD_COMMAND
+
+			POP AH
+			AND AH, #0x0F
+			LSL AH, #4
+			OR AH, #0x0D
+			PUSH AH
+			LC SEND_LCD_COMMAND
+			AND AH, #0xF0
+			OR AH, #0x09
+			PUSH AH
+			LC SEND_LCD_COMMAND
+
+
+
+
+			LRET
+
+LCD_WRITE_STRING:
+			POP AR7
+			POP AR6
+			POP AR5
+			PUSH AR6
+			PUSH AR7
+STR_LOOP:
+			CMP *AR5, #0x00
+			B ENDL1, EQ
+			PUSH *AR5
+			LC LCD_WRITE_CHAR
+			INC AR5
+			B STR_LOOP, UNC
+
+ENDL1:
+
+			LRET
+
+LCD_CLEAR:
+			PUSH #0x00
+			LC SEND_LCD_COMMAND
+			PUSH #0x04
+			LC SEND_LCD_COMMAND
+			PUSH #0x00
+			LC SEND_LCD_COMMAND
+
+			PUSH #0x10
+			LC SEND_LCD_COMMAND
+			PUSH #0x14
+			LC SEND_LCD_COMMAND
+			PUSH #0x18
+			LC SEND_LCD_COMMAND
+
+			LRET

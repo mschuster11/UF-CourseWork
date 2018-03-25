@@ -1,0 +1,159 @@
+******************************************************************************
+             TMS320C2000 Linker PC v18.1.1                     
+******************************************************************************
+>> Linked Tue Mar 13 00:16:52 2018
+
+OUTPUT FILE NAME:   <Lab3.out>
+ENTRY POINT SYMBOL: "_c_int00"  address: 00009000
+
+
+MEMORY CONFIGURATION
+
+         name            origin    length      used     unused   attr    fill
+----------------------  --------  ---------  --------  --------  ----  --------
+PAGE 0:
+  BEGIN                 00000000   00000002  00000000  00000002  RWIX
+  BOOT_RSVD             00000002   0000004e  00000000  0000004e  RWIX
+  RAMM0                 00000050   000003b0  00000000  000003b0  RWIX
+  RAML0                 00008000   00001000  00000000  00001000  RWIX
+  RAML1                 00009000   00001000  00000219  00000de7  RWIX
+  RAML2                 0000a000   00001000  00000019  00000fe7  RWIX
+  RAML3                 0000b000   00001000  00000000  00001000  RWIX
+  XRAM                  00100000   00100000  0000001b  000fffe5  RWIX
+  ZONE7A                00200000   0000fc00  00000000  0000fc00  RWIX
+  CSM_RSVD              0033ff80   00000076  00000000  00000076  RWIX
+  CSM_PWL               0033fff8   00000008  00000000  00000008  RWIX
+  ADC_CAL               00380080   00000009  00000000  00000009  RWIX
+  IQTABLES              003fe000   00000b50  00000000  00000b50  RWIX
+  IQTABLES2             003feb50   0000008c  00000000  0000008c  RWIX
+  FPUTABLES             003febdc   000006a0  00000000  000006a0  RWIX
+  BOOTROM               003ff27c   00000d44  00000000  00000d44  RWIX
+  RESET                 003fffc0   00000002  00000000  00000002  RWIX
+
+PAGE 1:
+  RAMM1                 00000400   00000400  00000000  00000400  RWIX
+  RAML4                 0000c000   00001000  00000000  00001000  RWIX
+  RAML5                 0000d000   00001000  00000000  00001000  RWIX
+  RAML6                 0000e000   00001000  00000000  00001000  RWIX
+  RAML7                 0000f000   00001000  00000037  00000fc9  RWIX
+  ZONE7B                0020fc00   00000400  00000000  00000400  RWIX
+
+
+SECTION ALLOCATION MAP
+
+ output                                  attributes/
+section   page    origin      length       input sections
+--------  ----  ----------  ----------   ----------------
+.text      0    00009000    00000219     
+                  00009000    00000219     sram.obj (.text)
+
+.text2     0    00100000    0000001b     UNINITIALIZED
+                  00100000    0000001b     Quiz3Supplement.obj (.text2)
+
+.cinit     0    00008000    00000000     UNINITIALIZED
+
+.pinit     0    00008000    00000000     UNINITIALIZED
+
+.data      0    0000a000    00000019     
+                  0000a000    00000019     sram.obj (.data)
+
+.bss       0    0000b000    00000000     UNINITIALIZED
+
+DMARAML7   1    0000f000    00000037     
+                  0000f000    00000037     Quiz3Supplement.obj (DMARAML7)
+
+.reset     0    003fffc0    00000000     DSECT
+
+csm_rsvd   0    0033ff80    00000000     DSECT
+
+csmpasswds 
+*          0    0033fff8    00000000     DSECT
+
+MODULE SUMMARY
+
+       Module                code   initialized data   uninitialized data
+       ------                ----   ----------------   ------------------
+    .\
+       sram.obj              537    25                 0                 
+       Quiz3Supplement.obj   0      55                 27                
+    +--+---------------------+------+------------------+--------------------+
+       Total:                537    80                 27                
+                                                                         
+    +--+---------------------+------+------------------+--------------------+
+       Grand Total:          537    80                 27                
+
+
+GLOBAL DATA SYMBOLS: SORTED BY DATA PAGE
+
+address     data page           name
+--------    ----------------    ----
+0000f000     3c0 (0000f000)     vector
+0000f036     3c0 (0000f000)     length
+
+00100000    4000 (00100000)     cdf
+
+
+GLOBAL SYMBOLS: SORTED ALPHABETICALLY BY Name 
+
+page  address   name                 
+----  -------   ----                 
+0     0000b000  .bss                 
+0     0000a000  .data                
+0     00009000  .text                
+abs   ffffffff  ___TI_pprof_out_hndl 
+abs   ffffffff  ___TI_prof_data_size 
+abs   ffffffff  ___TI_prof_data_start
+abs   ffffffff  ___binit__           
+0     0000b000  ___bss__             
+abs   ffffffff  ___c_args__          
+abs   ffffffff  ___cinit__           
+0     0000a000  ___data__            
+0     0000a019  ___edata__           
+0     0000b000  ___end__             
+0     00009219  ___etext__           
+abs   ffffffff  ___pinit__           
+0     00009000  ___text__            
+0     00009000  _c_int00             
+abs   ffffffff  binit                
+0     00100000  cdf                  
+abs   ffffffff  cinit                
+0     0000a019  edata                
+0     0000b000  end                  
+0     00009219  etext                
+1     0000f036  length               
+abs   ffffffff  pinit                
+1     0000f000  vector               
+
+
+GLOBAL SYMBOLS: SORTED BY Symbol Address 
+
+page  address   name                 
+----  -------   ----                 
+0     00009000  .text                
+0     00009000  ___text__            
+0     00009000  _c_int00             
+0     00009219  ___etext__           
+0     00009219  etext                
+0     0000a000  .data                
+0     0000a000  ___data__            
+0     0000a019  ___edata__           
+0     0000a019  edata                
+0     0000b000  .bss                 
+0     0000b000  ___bss__             
+0     0000b000  ___end__             
+0     0000b000  end                  
+0     00100000  cdf                  
+1     0000f000  vector               
+1     0000f036  length               
+abs   ffffffff  ___TI_pprof_out_hndl 
+abs   ffffffff  ___TI_prof_data_size 
+abs   ffffffff  ___TI_prof_data_start
+abs   ffffffff  ___binit__           
+abs   ffffffff  ___c_args__          
+abs   ffffffff  ___cinit__           
+abs   ffffffff  ___pinit__           
+abs   ffffffff  binit                
+abs   ffffffff  cinit                
+abs   ffffffff  pinit                
+
+[26 symbols]

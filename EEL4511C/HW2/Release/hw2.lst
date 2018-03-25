@@ -1,0 +1,43 @@
+TMS320C2000 Assembler PC v16.9.6 Thu Feb 01 13:44:25 2018
+
+Tools Copyright (c) 1996-2017 Texas Instruments Incorporated
+../hw2.asm                                                           PAGE    1
+
+       1                              .global         _c_int00
+       2              
+       3        9100  negCount                .set    0x9100
+       4              
+       5 00000000                       .data
+       6 00000000 000C  vectorStart             .word   12
+       7 00000001 0022                                  .word   34
+       8 00000002 FFF4                                  .word   -12
+       9 00000003 0002                                  .word   2
+      10 00000004 0013                                  .word   19
+      11 00000005 FFBD                                  .word   -67
+      12 00000006 0080                                  .word   128
+      13 00000007 FFCC                                  .word   -52
+      14 00000008 000C                                  .word   12
+      15 00000009 FF68                                  .word   -152
+      16 0000000a FFFF                                  .word   -1
+      17 0000000b 0000                                  .word   0
+      18              
+      19              
+      20 00000000                       .text
+      21 00000000       _c_int00:
+      22              
+      23 00000000 28A0"                         MOV AR0, #vectorStart
+         00000001 0000 
+      24 00000002 28A1                          MOV AR1, #negCount
+         00000003 9100 
+      25 00000004 2BC1                          MOV *AR1, #0
+      26 00000005 92C0  LOOP            MOV AL, *AR0
+      27 00000006 6107                          B END1, EQ
+      28 00000007 0AA0                          INC AR0
+      29 00000008 5200                          CMP AL, #0
+      30 00000009 63FC                          B LOOP, GEQ
+      31 0000000a 0AC1                          INC *AR1
+      32 0000000b 92C1                          MOV AL, *AR1
+      33 0000000c 60F9                          B LOOP, NEQ
+      34 0000000d 6F00  END1            B END1, UNC
+
+No Assembly Errors, No Assembly Warnings

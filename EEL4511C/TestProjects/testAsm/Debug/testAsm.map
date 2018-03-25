@@ -1,0 +1,150 @@
+******************************************************************************
+             TMS320C2000 Linker PC v18.1.1                     
+******************************************************************************
+>> Linked Tue Mar 13 00:28:51 2018
+
+OUTPUT FILE NAME:   <testAsm.out>
+ENTRY POINT SYMBOL: "_c_int00"  address: 00009000
+
+
+MEMORY CONFIGURATION
+
+         name            origin    length      used     unused   attr    fill
+----------------------  --------  ---------  --------  --------  ----  --------
+PAGE 0:
+  BEGIN                 00000000   00000002  00000000  00000002  RWIX
+  BOOT_RSVD             00000002   0000004e  00000000  0000004e  RWIX
+  RAMM0                 00000050   000003b0  00000000  000003b0  RWIX
+  RAML0                 00008000   00001000  0000000a  00000ff6  RWIX
+  RAML1                 00009000   00001000  00000033  00000fcd  RWIX
+  RAML2                 0000a000   00001000  00000000  00001000  RWIX
+  RAML3                 0000b000   00001000  00000000  00001000  RWIX
+  ZONE7A                00200000   0000fc00  00000000  0000fc00  RWIX
+  CSM_RSVD              0033ff80   00000076  00000000  00000076  RWIX
+  CSM_PWL               0033fff8   00000008  00000000  00000008  RWIX
+  ADC_CAL               00380080   00000009  00000000  00000009  RWIX
+  IQTABLES              003fe000   00000b50  00000000  00000b50  RWIX
+  IQTABLES2             003feb50   0000008c  00000000  0000008c  RWIX
+  FPUTABLES             003febdc   000006a0  00000000  000006a0  RWIX
+  BOOTROM               003ff27c   00000d44  00000000  00000d44  RWIX
+  RESET                 003fffc0   00000002  00000000  00000002  RWIX
+
+PAGE 1:
+  RAMM1                 00000400   00000400  00000000  00000400  RWIX
+  RAML4                 0000c000   00001000  00000000  00001000  RWIX
+  RAML5                 0000d000   00001000  00000000  00001000  RWIX
+  RAML6                 0000e000   00001000  00000000  00001000  RWIX
+  RAML7                 0000f000   00001000  00000000  00001000  RWIX
+  ZONE7B                0020fc00   00000400  00000000  00000400  RWIX
+
+
+SECTION ALLOCATION MAP
+
+ output                                  attributes/
+section   page    origin      length       input sections
+--------  ----  ----------  ----------   ----------------
+.cinit     0    00008000    0000000a     
+                  00008000    0000000a     test.obj (.cinit)
+
+.text      0    00009000    00000033     
+                  00009000    00000033     test.obj (.text)
+
+.pinit     0    00008000    00000000     UNINITIALIZED
+
+.data      0    0000a000    00000000     UNINITIALIZED
+
+.bss       0    0000b000    00000000     UNINITIALIZED
+
+.reset     0    003fffc0    00000000     DSECT
+
+csm_rsvd   0    0033ff80    00000000     DSECT
+
+csmpasswds 
+*          0    0033fff8    00000000     DSECT
+
+MODULE SUMMARY
+
+       Module         code   initialized data   uninitialized data
+       ------         ----   ----------------   ------------------
+    .\
+       test.obj       51     10                 0                 
+    +--+--------------+------+------------------+--------------------+
+       Total:         51     10                 0                 
+                                                                  
+    +--+--------------+------+------------------+--------------------+
+       Grand Total:   51     10                 0                 
+
+
+GLOBAL DATA SYMBOLS: SORTED BY DATA PAGE
+
+address     data page           name
+--------    ----------------    ----
+00008000     200 (00008000)     Temp0
+00008008     200 (00008000)     Ones
+00008009     200 (00008000)     Tenths
+
+
+GLOBAL SYMBOLS: SORTED ALPHABETICALLY BY Name 
+
+page  address   name                 
+----  -------   ----                 
+0     0000b000  .bss                 
+0     0000a000  .data                
+0     00009000  .text                
+0     00008008  Ones                 
+0     00008000  Temp0                
+0     00008009  Tenths               
+abs   ffffffff  ___TI_pprof_out_hndl 
+abs   ffffffff  ___TI_prof_data_size 
+abs   ffffffff  ___TI_prof_data_start
+abs   ffffffff  ___binit__           
+0     0000b000  ___bss__             
+abs   ffffffff  ___c_args__          
+0     00008000  ___cinit__           
+0     0000a000  ___data__            
+0     0000a000  ___edata__           
+0     0000b000  ___end__             
+0     00009033  ___etext__           
+abs   ffffffff  ___pinit__           
+0     00009000  ___text__            
+0     00009000  _c_int00             
+abs   ffffffff  binit                
+0     00008000  cinit                
+0     0000a000  edata                
+0     0000b000  end                  
+0     00009033  etext                
+abs   ffffffff  pinit                
+
+
+GLOBAL SYMBOLS: SORTED BY Symbol Address 
+
+page  address   name                 
+----  -------   ----                 
+0     00008000  Temp0                
+0     00008000  ___cinit__           
+0     00008000  cinit                
+0     00008008  Ones                 
+0     00008009  Tenths               
+0     00009000  .text                
+0     00009000  ___text__            
+0     00009000  _c_int00             
+0     00009033  ___etext__           
+0     00009033  etext                
+0     0000a000  .data                
+0     0000a000  ___data__            
+0     0000a000  ___edata__           
+0     0000a000  edata                
+0     0000b000  .bss                 
+0     0000b000  ___bss__             
+0     0000b000  ___end__             
+0     0000b000  end                  
+abs   ffffffff  ___TI_pprof_out_hndl 
+abs   ffffffff  ___TI_prof_data_size 
+abs   ffffffff  ___TI_prof_data_start
+abs   ffffffff  ___binit__           
+abs   ffffffff  ___c_args__          
+abs   ffffffff  ___pinit__           
+abs   ffffffff  binit                
+abs   ffffffff  pinit                
+
+[26 symbols]
