@@ -5,6 +5,7 @@
 
 #include "msLib.h"
 
+Uint16 currentSramIndex = 0xFFC0;
 
 interrupt void timer1Isr()
 {
@@ -15,8 +16,14 @@ interrupt void timer1Isr()
 
 interrupt void audioIsr(void)
 {
-    McbspbRegs.DXR1.all = McbspbRegs.DRR1.all;
-    McbspbRegs.DXR2.all = McbspbRegs.DRR2.all;
+
+
+    sram[(currentSramIndex&0x003F)] = McbspbRegs.DRR2.all;
+    McbspbRegs.DXR2.all = (int16)lpf(lpfWeights,(currentSramIndex&0x003F));
+    currentSramIndex = (currentSramIndex|0xFFC0)+1;
+
+    Uint16 dummy = McbspbRegs.DRR1.all;
+    McbspbRegs.DXR1.all = 0;
     PieCtrlRegs.PIEACK.all = PIEACK_GROUP6;
 }
 

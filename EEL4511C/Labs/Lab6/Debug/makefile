@@ -37,6 +37,7 @@ ORDERED_OBJS += \
 "./personalLib/src/OneToOneI2CDriver.obj" \
 "./personalLib/src/Timer1_Utils.obj" \
 "./personalLib/src/extSram.obj" \
+"./personalLib/src/filters.obj" \
 "../28335_RAM_lnk.cmd" \
 "../Headers/DSP2833x_Headers_nonBIOS.cmd" \
 $(GEN_CMDS__FLAG) \
@@ -189,8 +190,8 @@ Lab6.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "main.obj" "AIC23_Lib\AIC23.obj" "AIC23_Lib\InitAIC23.obj" "Common\DSP2833x_ADC_cal.obj" "Common\DSP2833x_Adc.obj" "Common\DSP2833x_CpuTimers.obj" "Common\DSP2833x_DMA.obj" "Common\DSP2833x_DefaultIsr.obj" "Common\DSP2833x_I2C.obj" "Common\DSP2833x_Mcbsp.obj" "Common\DSP2833x_MemCopy.obj" "Common\DSP2833x_PieCtrl.obj" "Common\DSP2833x_PieVect.obj" "Common\DSP2833x_Spi.obj" "Common\DSP2833x_SysCtrl.obj" "Common\DSP2833x_Xintf.obj" "Common\DSP2833x_usDelay.obj" "Headers\DSP2833x_GlobalVariableDefs.obj" "personalLib\src\ADC_Utils.obj" "personalLib\src\Codec_Utils.obj" "personalLib\src\I2C_LCD_Utils.obj" "personalLib\src\Interrupt_ISRs.obj" "personalLib\src\Interrupt_Utils.obj" "personalLib\src\LEDs_switches_Utils.obj" "personalLib\src\OneToOneI2CDriver.obj" "personalLib\src\Timer1_Utils.obj" "personalLib\src\extSram.obj" 
-	-$(RM) "main.d" "AIC23_Lib\AIC23.d" "AIC23_Lib\InitAIC23.d" "Common\DSP2833x_Adc.d" "Common\DSP2833x_CpuTimers.d" "Common\DSP2833x_DMA.d" "Common\DSP2833x_DefaultIsr.d" "Common\DSP2833x_I2C.d" "Common\DSP2833x_Mcbsp.d" "Common\DSP2833x_MemCopy.d" "Common\DSP2833x_PieCtrl.d" "Common\DSP2833x_PieVect.d" "Common\DSP2833x_Spi.d" "Common\DSP2833x_SysCtrl.d" "Common\DSP2833x_Xintf.d" "Headers\DSP2833x_GlobalVariableDefs.d" "personalLib\src\ADC_Utils.d" "personalLib\src\Codec_Utils.d" "personalLib\src\I2C_LCD_Utils.d" "personalLib\src\Interrupt_ISRs.d" "personalLib\src\Interrupt_Utils.d" "personalLib\src\LEDs_switches_Utils.d" "personalLib\src\OneToOneI2CDriver.d" "personalLib\src\Timer1_Utils.d" "personalLib\src\extSram.d" 
+	-$(RM) "main.obj" "AIC23_Lib\AIC23.obj" "AIC23_Lib\InitAIC23.obj" "Common\DSP2833x_ADC_cal.obj" "Common\DSP2833x_Adc.obj" "Common\DSP2833x_CpuTimers.obj" "Common\DSP2833x_DMA.obj" "Common\DSP2833x_DefaultIsr.obj" "Common\DSP2833x_I2C.obj" "Common\DSP2833x_Mcbsp.obj" "Common\DSP2833x_MemCopy.obj" "Common\DSP2833x_PieCtrl.obj" "Common\DSP2833x_PieVect.obj" "Common\DSP2833x_Spi.obj" "Common\DSP2833x_SysCtrl.obj" "Common\DSP2833x_Xintf.obj" "Common\DSP2833x_usDelay.obj" "Headers\DSP2833x_GlobalVariableDefs.obj" "personalLib\src\ADC_Utils.obj" "personalLib\src\Codec_Utils.obj" "personalLib\src\I2C_LCD_Utils.obj" "personalLib\src\Interrupt_ISRs.obj" "personalLib\src\Interrupt_Utils.obj" "personalLib\src\LEDs_switches_Utils.obj" "personalLib\src\OneToOneI2CDriver.obj" "personalLib\src\Timer1_Utils.obj" "personalLib\src\extSram.obj" "personalLib\src\filters.obj" 
+	-$(RM) "main.d" "AIC23_Lib\AIC23.d" "AIC23_Lib\InitAIC23.d" "Common\DSP2833x_Adc.d" "Common\DSP2833x_CpuTimers.d" "Common\DSP2833x_DMA.d" "Common\DSP2833x_DefaultIsr.d" "Common\DSP2833x_I2C.d" "Common\DSP2833x_Mcbsp.d" "Common\DSP2833x_MemCopy.d" "Common\DSP2833x_PieCtrl.d" "Common\DSP2833x_PieVect.d" "Common\DSP2833x_Spi.d" "Common\DSP2833x_SysCtrl.d" "Common\DSP2833x_Xintf.d" "Headers\DSP2833x_GlobalVariableDefs.d" "personalLib\src\ADC_Utils.d" "personalLib\src\Codec_Utils.d" "personalLib\src\I2C_LCD_Utils.d" "personalLib\src\Interrupt_ISRs.d" "personalLib\src\Interrupt_Utils.d" "personalLib\src\LEDs_switches_Utils.d" "personalLib\src\OneToOneI2CDriver.d" "personalLib\src\Timer1_Utils.d" "personalLib\src\extSram.d" "personalLib\src\filters.d" 
 	-$(RM) "Common\DSP2833x_ADC_cal.d" "Common\DSP2833x_usDelay.d" 
 	-@echo 'Finished clean'
 	-@echo ' '

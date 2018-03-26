@@ -39,6 +39,7 @@ main.obj: C:/Users/ghost/OneDrive/School-Master/EEL4511C/Labs/Lab6/personalLib/h
 main.obj: C:/Users/ghost/OneDrive/School-Master/EEL4511C/Labs/Lab6/personalLib/headers/LEDs_switches_Utils.h
 main.obj: C:/Users/ghost/OneDrive/School-Master/EEL4511C/Labs/Lab6/personalLib/headers/OneToOneI2CDriver.h
 main.obj: C:/Users/ghost/OneDrive/School-Master/EEL4511C/Labs/Lab6/personalLib/headers/Timer1_Utils.h
+main.obj: C:/Users/ghost/OneDrive/School-Master/EEL4511C/Labs/Lab6/personalLib/headers/filters.h
 
 ../main.c: 
 C:/ti/controlSUITE/device_support/f2833x/v142/DSP2833x_headers/include/DSP2833x_Device.h: 
@@ -79,3 +80,4 @@ C:/Users/ghost/OneDrive/School-Master/EEL4511C/Labs/Lab6/personalLib/headers/Int
 C:/Users/ghost/OneDrive/School-Master/EEL4511C/Labs/Lab6/personalLib/headers/LEDs_switches_Utils.h: 
 C:/Users/ghost/OneDrive/School-Master/EEL4511C/Labs/Lab6/personalLib/headers/OneToOneI2CDriver.h: 
 C:/Users/ghost/OneDrive/School-Master/EEL4511C/Labs/Lab6/personalLib/headers/Timer1_Utils.h: 
+C:/Users/ghost/OneDrive/School-Master/EEL4511C/Labs/Lab6/personalLib/headers/filters.h: 

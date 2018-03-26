@@ -17,5 +17,6 @@
 #include "LEDs_switches_Utils.h"
 #include "OneToOneI2CDriver.h"
 #include "Timer1_Utils.h"
+#include "filters.h"
 
 #endif
