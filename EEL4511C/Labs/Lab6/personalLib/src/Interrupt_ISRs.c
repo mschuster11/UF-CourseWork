@@ -19,7 +19,10 @@ interrupt void audioIsr(void)
 
 
     sram[(currentSramIndex&0x003F)] = McbspbRegs.DRR2.all;
-    McbspbRegs.DXR2.all = (int16)lpf(lpfWeights,(currentSramIndex&0x003F));
+    int16 asmFir = (int16)lpfASM(lpfWeights, sram, (currentSramIndex&0x003F));
+    int16 cFir = (int16)lpf(lpfWeights, (currentSramIndex&0x003F));
+//    McbspbRegs.DXR2.all =
+    McbspbRegs.DXR2.all = 0x00;
     currentSramIndex = (currentSramIndex|0xFFC0)+1;
 
     Uint16 dummy = McbspbRegs.DRR1.all;

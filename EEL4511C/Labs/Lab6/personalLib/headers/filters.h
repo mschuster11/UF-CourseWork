@@ -8,14 +8,13 @@
 
 void initLpfWeights(float* weights, Uint16 len, Uint16 scaler);
 
-
 float lpf(float* weights, Uint16 sampleOffset);
 
 float hpf(float* weights, Uint16* samples);
 
 float bpf(float* weights, Uint16* samples);
 
-
+float lpfASM(float* weights, Uint16* samples, Uint16 sampleOffset);
 
 /*
 
@@ -36,7 +35,7 @@ sampling frequency: 48000 Hz
 
 */
 
-#define FILTER_TAP_NUM 39
+#define FILTER_TAP_NUM 31
 
 extern float lpfWeights[FILTER_TAP_NUM];
 

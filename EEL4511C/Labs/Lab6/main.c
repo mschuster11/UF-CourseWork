@@ -32,11 +32,9 @@ Uint16 main(void)
     initExtSRAM();
     setLEDS(0x00);
 //    initLpfWeights(lpfWeights, sizeof(lpfWeights)/sizeof(float), 10);
-
     SpiTransmit(CLKsampleratecontrol(SR48));
     while(TRUE)
     {
-
 
     }
     return 0;
