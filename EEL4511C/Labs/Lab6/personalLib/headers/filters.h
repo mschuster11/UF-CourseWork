@@ -8,34 +8,15 @@
 
 void initLpfWeights(float* weights, Uint16 len, Uint16 scaler);
 
-float lpf(float* weights, Uint16 sampleOffset);
+float lpf(float* weights, float* samples);
 
 float hpf(float* weights, Uint16* samples);
 
 float bpf(float* weights, Uint16* samples);
 
-float lpfASM(float* weights, Uint16* samples, Uint16 sampleOffset);
+float lpfASM(float* weights, int16* samples);
 
-/*
-
-FIR filter designed with
-http://t-filter.appspot.com
-
-sampling frequency: 48000 Hz
-
-* 0 Hz - 1400 Hz
-  gain = 1
-  desired ripple = 3 dB
-  actual ripple = 0.01957151705898566 dB
-
-* 3000 Hz - 24000 Hz
-  gain = 0
-  desired attenuation = -40 dB
-  actual attenuation = -81.6023105003634 dB
-
-*/
-
-#define FILTER_TAP_NUM 31
+#define FILTER_TAP_NUM 45
 
 extern float lpfWeights[FILTER_TAP_NUM];
 

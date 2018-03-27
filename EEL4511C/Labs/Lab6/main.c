@@ -29,14 +29,11 @@ Uint16 main(void)
     InitAIC23();
 
     initCodec();
-    initExtSRAM();
+//    initExtSRAM();
     setLEDS(0x00);
 //    initLpfWeights(lpfWeights, sizeof(lpfWeights)/sizeof(float), 10);
     SpiTransmit(CLKsampleratecontrol(SR48));
-    while(TRUE)
-    {
-
-    }
+    for(;;);
     return 0;
 }
 
