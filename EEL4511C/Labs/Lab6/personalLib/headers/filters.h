@@ -6,18 +6,20 @@
 #ifndef FILTERS_H_
 #define FILTERS_H_
 
-void initLpfWeights(float* weights, Uint16 len, Uint16 scaler);
+void initWeights(float* weights, Uint16 len, float scaler);
 
-float lpf(float* weights, float* samples);
+float firC(float* weights, float* samples, Uint16 weightLen);
 
-float hpf(float* weights, Uint16* samples);
+float firASM(float* weights, float* samples, Uint16 weightLen);
 
-float bpf(float* weights, Uint16* samples);
+#define FILTER_TAP_NUM_LPF 43
+#define FILTER_TAP_NUM_BPF 207
+#define FILTER_TAP_NUM_HPF 33
 
-float lpfASM(float* weights, int16* samples);
+extern float lpfWeights[FILTER_TAP_NUM_LPF];
 
-#define FILTER_TAP_NUM 45
+extern float bpfWeights[FILTER_TAP_NUM_BPF];
 
-extern float lpfWeights[FILTER_TAP_NUM];
+extern float hpfWeights[FILTER_TAP_NUM_HPF];
 
 #endif

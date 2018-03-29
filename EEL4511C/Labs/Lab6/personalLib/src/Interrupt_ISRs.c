@@ -5,9 +5,7 @@
 
 #include "msLib.h"
 
-Uint16 currentBufIndex = 0xF800;
-int16 sampleBuffer[SAMPLE_BUFFER_SIZE];
-
+float sampleBuffer[SAMPLE_BUFFER_SIZE];
 
 interrupt void timer1Isr()
 {
@@ -15,30 +13,41 @@ interrupt void timer1Isr()
     return;
 }
 
+enum
+{
+    LEFT,
+    RIGHT,
+};
 
 interrupt void audioIsr(void)
 {
-    GpioDataRegs.GPATOGGLE.bit.GPIO14 = 1;
-    sampleBuffer[currentBufIndex&0x007F] = McbspbRegs.DRR2.all;
-    sampleBuffer[SAMPLE_BUFFER_OFFSET + (currentBufIndex&0x007F)] = McbspbRegs.DRR2.all;
+    static Uint16 currentBufIndex = 0xFF00;
+    static Uint16 state = LEFT;
+    if(state == LEFT)
+    {
+        GpioDataRegs.GPATOGGLE.bit.GPIO14 = 1;
+        float sample = (float)(int16)McbspbRegs.DRR2.all;
+        sampleBuffer[currentBufIndex&SAMPLE_BUFFER_MASK_OFF] = sample;
+        sampleBuffer[SAMPLE_BUFFER_OFFSET + (currentBufIndex&SAMPLE_BUFFER_MASK_OFF)] = sample;
+
+//        McbspbRegs.DXR2.all = (int16)(10.0f*firC(lpfWeights, (sampleBuffer+(SAMPLE_BUFFER_OFFSET + (currentBufIndex&SAMPLE_BUFFER_MASK_OFF))), FILTER_TAP_NUM_LPF));
+//        McbspbRegs.DXR2.all = (int16)(10.0f*firASM(lpfWeights, (sampleBuffer+(SAMPLE_BUFFER_OFFSET + (currentBufIndex&SAMPLE_BUFFER_MASK_OFF))), FILTER_TAP_NUM_LPF));
 
 
+//        McbspbRegs.DXR2.all = (int16)(10.0f*firC(bpfWeights, (sampleBuffer+(SAMPLE_BUFFER_OFFSET + (currentBufIndex&SAMPLE_BUFFER_MASK_OFF))), FILTER_TAP_NUM_BPF));
+//        McbspbRegs.DXR2.all = (int16)(firASM(bpfWeights, (sampleBuffer+(SAMPLE_BUFFER_OFFSET + (currentBufIndex&SAMPLE_BUFFER_MASK_OFF))), FILTER_TAP_NUM_BPF));
 
-    int16 asmFir = (int16)lpfASM(lpfWeights, sampleBuffer+(SAMPLE_BUFFER_OFFSET + (currentBufIndex&0x007F)));
-//    int16* currentSample = sampleBuffer+(SAMPLE_BUFFER_OFFSET + (currentBufIndex&0x007F));
-//    float res = 0;
-//    for(int i=0;i<FILTER_TAP_NUM;i++)
-//        res+=lpfWeights[i]*(float)currentSample[-i];
-    McbspbRegs.DXR2.all = sampleBuffer[currentBufIndex&0x007F];
+//        McbspbRegs.DXR2.all = (int16)(10.0f*firC(hpfWeights, (sampleBuffer+(SAMPLE_BUFFER_OFFSET + (currentBufIndex&SAMPLE_BUFFER_MASK_OFF))), FILTER_TAP_NUM_HPF));
+        McbspbRegs.DXR2.all = (int16)(firASM(hpfWeights, (sampleBuffer+(SAMPLE_BUFFER_OFFSET + (currentBufIndex&SAMPLE_BUFFER_MASK_OFF))), FILTER_TAP_NUM_HPF));
 
-    currentBufIndex = (currentBufIndex|0xFF80)+1;
+        currentBufIndex = (currentBufIndex|SAMPLE_BUFFER_MASK_ON)+1;
+        GpioDataRegs.GPATOGGLE.bit.GPIO14 = 1;
+    }
 
-    Uint16 dummy = McbspbRegs.DRR1.all;
+    Uint16 dummy = McbspbRegs.DRR2.all;
+    dummy = McbspbRegs.DRR1.all;
     McbspbRegs.DXR1.all = 0;
     PieCtrlRegs.PIEACK.all = PIEACK_GROUP6;
-    GpioDataRegs.GPATOGGLE.bit.GPIO14 = 1;
+    state ^= 1;
+
 }
-
-
-
-

@@ -24,7 +24,7 @@ sampling frequency: 48000 Hz
 
 */
 
-float lpfWeights[FILTER_TAP_NUM_LPF] = {
+float lpfFirWeights[FILTER_TAP_NUM_FIR_LPF] = {
   -0.006458890599120238,
   -0.0052277234367167115,
   -0.006802500304306202,
@@ -95,7 +95,7 @@ sampling frequency: 48000 Hz
 
 */
 
-float bpfWeights[FILTER_TAP_NUM_BPF] = {
+float bpfFirWeights[FILTER_TAP_NUM_FIR_BPF] = {
   -0.005550607155108627,
   -0.0013056523576555079,
   -0.0013342155644092896,
@@ -325,7 +325,7 @@ sampling frequency: 48000 Hz
 
 */
 
-float hpfWeights[FILTER_TAP_NUM_HPF] = {
+float hpfFirWeights[FILTER_TAP_NUM_FIR_HPF] = {
   -0.031838401643728594,
   0.0064122218895261655,
   0.00976495299703675,
@@ -362,6 +362,21 @@ float hpfWeights[FILTER_TAP_NUM_HPF] = {
 };
 
 
+float lpfIirWeights[FILTER_IIR_LPF_NUM_CASCADED_STAGES][FILTER_IIR_SOS_COLUMNS] = {
+     {0.0071821,0.014364,0.0071821,1,-1.6707,0.69944},
+     {0.0069888,0.013978,0.0069888,1,-1.8772,0.90951},
+     {0.0086412,0.017282,0.0086412,1,-1.7408,0.77075}
+};
+
+float bpfIirWeights[FILTER_IIR_BPF_NUM_CASCADED_STAGES][FILTER_IIR_SOS_COLUMNS] = {
+     {0.024856,0,-0.024856,1,-1.941,0.95029},
+     {0.031546,0,-0.031546,1,-1.9345,0.94112},
+     {0.019932,0,-0.019932,1,-1.9878,0.99047},
+     {0.022655,0,-0.022655,1,-1.9692,0.98039},
+     {0.037778,0,-0.037778,1,-1.968,0.97112},
+     {0.035133,0,-0.035133,1,-1.9478,0.95213},
+};
+
 void initWeights(float* weights, Uint16 len, float scaler)
 {
     for(Uint16 i=0;i<len;i++)
@@ -378,3 +393,87 @@ float firC(float* weights, float* samples, Uint16 weightLen)
 	return res;
 }
 
+
+
+float iirLpf(Uint16 numCascades, Uint16 numColumns, float weights[][numColumns], float* samples)
+{
+    float res = 0;
+    static float y0[3] = {0,0,0};
+    static float y1[3] = {0,0,0};
+    static float y2[3] = {0,0,0};
+
+
+
+    y0[2] = (weights[0][0]*samples[0] + weights[0][1]*samples[-1] + weights[0][2]*samples[-2]
+          - weights[0][4]*y0[1] - weights[0][5]*y0[0]);
+
+    y1[2] = (weights[1][0]*y0[2] + weights[1][1]*y0[1] + weights[1][2]*y0[0]
+          - weights[1][4]*y1[1] - weights[1][5]*y1[0]);
+
+    y2[2] = (weights[2][0]*y1[2] + weights[2][1]*y1[1] + weights[2][2]*y1[0]
+          - weights[2][4]*y2[1] - weights[2][5]*y2[0]);
+
+    res = y2[2];
+
+    y0[0] = y0[1];
+    y0[1] = y0[2];
+
+    y1[0] = y1[1];
+    y1[1] = y1[2];
+
+    y2[0] = y2[1];
+    y2[1] = y2[2];
+
+    return res*(1<<15);
+}
+
+float iirBpf(Uint16 numCascades, Uint16 numColumns, float weights[][numColumns], float* samples)
+{
+    float res = 0;
+    static float y0[3] = {0,0,0};
+    static float y1[3] = {0,0,0};
+    static float y2[3] = {0,0,0};    
+    static float y3[3] = {0,0,0};
+    static float y4[3] = {0,0,0};
+    static float y5[3] = {0,0,0};
+
+    y0[2] = (weights[0][0]*samples[0] + weights[0][1]*samples[-1] + weights[0][2]*samples[-2]
+          - weights[0][4]*y0[1] - weights[0][5]*y0[0]);
+
+    y1[2] = (weights[1][0]*y0[2] + weights[1][1]*y0[1] + weights[1][2]*y0[0]
+          - weights[1][4]*y1[1] - weights[1][5]*y1[0]);
+
+    y2[2] = (weights[2][0]*y1[2] + weights[2][1]*y1[1] + weights[2][2]*y1[0]
+          - weights[2][4]*y2[1] - weights[2][5]*y2[0]);
+
+    y3[2] = (weights[2][0]*y2[2] + weights[2][1]*y2[1] + weights[2][2]*y2[0]
+          - weights[2][4]*y3[1] - weights[2][5]*y3[0]);
+
+    y4[2] = (weights[2][0]*y3[2] + weights[2][1]*y3[1] + weights[2][2]*y3[0]
+          - weights[2][4]*y4[1] - weights[2][5]*y4[0]);
+
+    y5[2] = (weights[2][0]*y4[2] + weights[2][1]*y4[1] + weights[2][2]*y4[0]
+          - weights[2][4]*y5[1] - weights[2][5]*y5[0]);
+
+    res = y5[2];
+
+    y0[0] = y0[1];
+    y0[1] = y0[2];
+
+    y1[0] = y1[1];
+    y1[1] = y1[2];
+
+    y2[0] = y2[1];
+    y2[1] = y2[2];
+
+    y3[0] = y3[1];
+    y3[1] = y3[2];
+
+    y4[0] = y4[1];
+    y4[1] = y4[2];
+
+    y5[0] = y5[1];
+    y5[1] = y5[2];
+
+    return res*(1<<15);
+}
